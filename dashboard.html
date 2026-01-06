@@ -153,7 +153,11 @@ function renderVendas() {
   });
 }
 
-renderVendas();
+renderVendas() {
+  ...
+  renderRanking();
+}
+
 </script>
 
 
@@ -186,10 +190,69 @@ renderVendas();
 </section>
 
 
-  <section id="ranking" class="card page hidden">
-    <h2>Ranking</h2>
-    <p>Módulo de ranking</p>
-  </section>
+ <section id="ranking" class="card page hidden">
+  <h2>Ranking de Vendas</h2>
+
+  <ul id="listaRanking"></ul>
+
+  <canvas id="graficoRanking" height="120"></canvas>
+</section>
+<script>
+let chartRanking;
+
+function renderRanking() {
+  const resumo = {};
+
+  vendas.forEach(v => {
+    resumo[v.vendedor] = (resumo[v.vendedor] || 0) + v.valor;
+  });
+
+  const ordenado = Object.entries(resumo)
+    .sort((a, b) => b[1] - a[1]);
+
+  listaRanking.innerHTML = "";
+
+  ordenado.forEach((r, i) => {
+    const perc = meta ? ((r[1] / meta) * 100).toFixed(1) : 0;
+    listaRanking.innerHTML += `
+      <li>
+        <b>${i + 1}º ${r[0]}</b><br>
+        Total: R$ ${r[1].toFixed(2)}<br>
+        % da Meta: ${perc}%
+      </li>
+    `;
+  });
+
+  renderGrafico(ordenado);
+}
+
+function renderGrafico(dados) {
+  const labels = dados.map(d => d[0]);
+  const valores = dados.map(d => d[1]);
+
+  if (chartRanking) chartRanking.destroy();
+
+  chartRanking = new Chart(graficoRanking, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [{
+        data: valores,
+        backgroundColor: '#ff9900'
+      }]
+    },
+    options: {
+      plugins: {
+        legend: { display: false }
+      },
+      scales: {
+        y: { beginAtZero: true }
+      }
+    }
+  });
+}
+</script>
+
 
   <section id="relatorio" class="card page hidden">
     <h2>Relatório</h2>
