@@ -89,6 +89,50 @@ function showPage(id) {
   document.getElementById(id).classList.remove("hidden");
 }
 </script>
+<script>
+let leads = JSON.parse(localStorage.getItem("leads")) || [];
+
+function addLead() {
+  const lead = {
+    nome: leadNome.value,
+    telefone: leadTelefone.value,
+    email: leadEmail.value,
+    cpf: leadCPF.value,
+    origem: leadOrigem.value,
+    status: leadStatus.value,
+    obs: leadObs.value
+  };
+
+  leads.push(lead);
+  localStorage.setItem("leads", JSON.stringify(leads));
+
+  leadNome.value = "";
+  leadTelefone.value = "";
+  leadEmail.value = "";
+  leadCPF.value = "";
+  leadOrigem.value = "";
+  leadStatus.value = "";
+  leadObs.value = "";
+
+  renderLeads();
+}
+
+function renderLeads() {
+  listaLeads.innerHTML = "";
+  leads.forEach((l, i) => {
+    listaLeads.innerHTML += `
+      <li>
+        <b>${l.nome}</b><br>
+        Tel: ${l.telefone}<br>
+        Email: ${l.email}<br>
+        Status: ${l.status}
+      </li>
+    `;
+  });
+}
+
+renderLeads();
+</script>
 
 </body>
 </html>
