@@ -13,39 +13,46 @@
 </header>
 
 <nav>
-  <button onclick="show('home')">Dashboard</button>
-  <button onclick="show('leads')">Leads</button>
-  <button onclick="show('agendamentos')">Agendamentos</button>
-  <button onclick="show('vendas')">Vendas</button>
-  <button onclick="show('ranking')">Ranking</button>
-  <button onclick="show('relatorio')">Relatório</button>
+  <button onclick="showPage('home')">Dashboard</button>
+  <button onclick="showPage('leads')">Leads</button>
+  <button onclick="showPage('agendamentos')">Agendamentos</button>
+  <button onclick="showPage('vendas')">Vendas</button>
+  <button onclick="showPage('ranking')">Ranking</button>
+  <button onclick="showPage('relatorio')">Relatório</button>
 </nav>
 
 <main>
-  <section id="home" class="card">
-    <h2>Bem-vindo ao sistema</h2>
-    <p>Escolha uma opção no menu</p>
+
+  <section id="home" class="card page">
+    <h2>Dashboard</h2>
+    <p>Bem-vindo ao sistema ALPHA SOLUÇÕES</p>
   </section>
 
-  <section id="leads" class="card hidden">
-    <h2>Leads (em breve)</h2>
+  <section id="leads" class="card page hidden">
+    <h2>Leads</h2>
+    <p>Módulo de leads</p>
   </section>
 
-  <section id="agendamentos" class="card hidden">
-    <h2>Agendamentos (em breve)</h2>
+  <section id="agendamentos" class="card page hidden">
+    <h2>Agendamentos</h2>
+    <p>Módulo de agendamentos</p>
   </section>
 
-  <section id="vendas" class="card hidden">
-    <h2>Vendas (em breve)</h2>
+  <section id="vendas" class="card page hidden">
+    <h2>Vendas</h2>
+    <p>Módulo de vendas</p>
   </section>
 
-  <section id="ranking" class="card hidden">
-    <h2>Ranking (em breve)</h2>
+  <section id="ranking" class="card page hidden">
+    <h2>Ranking</h2>
+    <p>Módulo de ranking</p>
   </section>
 
-  <section id="relatorio" class="card hidden">
-    <h2>Relatório PDF (em breve)</h2>
+  <section id="relatorio" class="card page hidden">
+    <h2>Relatório</h2>
+    <p>Módulo de relatório PDF</p>
   </section>
+
 </main>
 
 <footer>
@@ -61,8 +68,11 @@ function logout() {
   location.href = "index.html";
 }
 
-function show(id) {
-  document.querySelectorAll("section").forEach(s => s.classList.add("hidden"));
+function showPage(id) {
+  document.querySelectorAll(".page").forEach(p => {
+    p.classList.add("hidden");
+  });
+
   document.getElementById(id).classList.remove("hidden");
 }
 </script>
