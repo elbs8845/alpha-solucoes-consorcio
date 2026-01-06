@@ -1,134 +1,138 @@
-<script>
-/* ================= LOGIN ================= */
-const user = JSON.parse(localStorage.getItem("logged"));
-if (!user) location.href = "index.html";
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>ALPHA SOLUÇÕES - Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-function logout() {
-  localStorage.removeItem("logged");
-  location.href = "index.html";
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #0b1d39;
+  color: #fff;
 }
 
-function showPage(id) {
-  document.querySelectorAll(".page").forEach(p => p.classList.add("hidden"));
-  document.getElementById(id).classList.remove("hidden");
+header {
+  background: #08162d;
+  padding: 15px;
+  text-align: center;
+  font-size: 22px;
+  font-weight: bold;
 }
 
-/* ================= LEADS ================= */
-let leads = JSON.parse(localStorage.getItem("leads")) || [];
-
-function addLead() {
-  leads.push({
-    nome: leadNome.value,
-    telefone: leadTelefone.value,
-    email: leadEmail.value,
-    cpf: leadCPF.value,
-    origem: leadOrigem.value,
-    status: leadStatus.value,
-    obs: leadObs.value
-  });
-  localStorage.setItem("leads", JSON.stringify(leads));
-  renderLeads();
+nav {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px;
 }
 
-function renderLeads() {
-  listaLeads.innerHTML = "";
-  leads.forEach(l => {
-    listaLeads.innerHTML += `<li><b>${l.nome}</b> - ${l.telefone}</li>`;
-  });
-}
-renderLeads();
-
-/* ================= AGENDAMENTOS ================= */
-let agendamentos = JSON.parse(localStorage.getItem("agendamentos")) || [];
-
-function addAgendamento() {
-  agendamentos.push({
-    cliente: agCliente.value,
-    data: agData.value,
-    hora: agHora.value,
-    tipo: agTipo.value,
-    resp: agResp.value,
-    obs: agObs.value
-  });
-  localStorage.setItem("agendamentos", JSON.stringify(agendamentos));
-  renderAgendamentos();
+nav button {
+  background: #ff8c00;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
 }
 
-function renderAgendamentos() {
-  listaAgendamentos.innerHTML = "";
-  agendamentos.forEach(a => {
-    listaAgendamentos.innerHTML += `<li><b>${a.cliente}</b> - ${a.data}</li>`;
-  });
-}
-renderAgendamentos();
-
-/* ================= VENDAS ================= */
-let vendas = JSON.parse(localStorage.getItem("vendas")) || [];
-let meta = Number(localStorage.getItem("meta")) || 0;
-
-function addVenda() {
-  const venda = {
-    cliente: vendCliente.value,
-    produto: vendProduto.value,
-    valor: Number(vendValor.value),
-    vendedor: vendVendedor.value,
-    data: new Date().toLocaleDateString()
-  };
-
-  if (!venda.cliente || !venda.valor || !venda.vendedor) {
-    alert("Preencha Cliente, Valor e Vendedor");
-    return;
-  }
-
-  vendas.push(venda);
-  localStorage.setItem("vendas", JSON.stringify(vendas));
-
-  meta = Number(metaValor.value) || 0;
-  localStorage.setItem("meta", meta);
-
-  vendCliente.value = "";
-  vendProduto.value = "";
-  vendValor.value = "";
-  vendVendedor.value = "";
-
-  renderVendas();
+.page {
+  display: none;
+  padding: 20px;
 }
 
-function renderVendas() {
-  const total = vendas.reduce((s, v) => s + v.valor, 0);
-  totalVendido.innerText = total.toFixed(2);
-
-  const percent = meta ? ((total / meta) * 100).toFixed(1) : 0;
-  percentMeta.innerText = percent + "%";
-
-  listaVendas.innerHTML = "";
-  vendas.forEach(v => {
-    listaVendas.innerHTML += `
-      <li>
-        <b>${v.cliente}</b> - R$ ${v.valor.toFixed(2)}<br>
-        Vendedor: ${v.vendedor}
-      </li>`;
-  });
-
-  renderRanking();
+.page.active {
+  display: block;
 }
 
-metaValor.value = meta;
-renderVendas();
-
-/* ================= RANKING ================= */
-function renderRanking() {
-  const resumo = {};
-  vendas.forEach(v => {
-    resumo[v.vendedor] = (resumo[v.vendedor] || 0) + v.valor;
-  });
-
-  listaRanking.innerHTML = "";
-  Object.entries(resumo)
-    .sort((a, b) => b[1] - a[1])
-    .forEach((r, i) => {
-      listaRanking.innerHTML += `
-        <li>${i + 1}º ${r[0]} - R$ ${r[1].toFixed(2)}</li>`;
-    });
+.card {
+  background: #102b55;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 15px;
 }
-</script>
+
+input, select, textarea {
+  width: 100%;
+  padding: 8px;
+  margin: 5px 0;
+  border-radius: 5px;
+  border: none;
+}
+
+button.action {
+  background: #ff8c00;
+  border: none;
+  padding: 10px;
+  width: 100%;
+  margin-top: 10px;
+  border-radius: 6px;
+  font-weight: bold;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+footer {
+  text-align: center;
+  padding: 10px;
+  font-size: 12px;
+  background: #08162d;
+}
+</style>
+</head>
+
+<body>
+
+<header>ALPHA SOLUÇÕES</header>
+
+<nav>
+  <button onclick="showPage('leads')">Leads</button>
+  <button onclick="showPage('agendamentos')">Agendamentos</button>
+  <button onclick="showPage('vendas')">Vendas</button>
+  <button onclick="showPage('ranking')">Ranking</button>
+</nav>
+
+<!-- LEADS -->
+<section id="leads" class="page active">
+  <div class="card">
+    <h3>Novo Lead</h3>
+    <input id="leadNome" placeholder="Nome">
+    <input id="leadTelefone" placeholder="Telefone">
+    <input id="leadEmail" placeholder="Email">
+    <input id="leadCPF" placeholder="CPF">
+    <input id="leadOrigem" placeholder="Origem">
+    <select id="leadStatus">
+      <option>Novo</option>
+      <option>Em contato</option>
+      <option>Fechado</option>
+    </select>
+    <textarea id="leadObs" placeholder="Observações"></textarea>
+    <button class="action" onclick="addLead()">Salvar Lead</button>
+  </div>
+  <ul id="listaLeads"></ul>
+</section>
+
+<!-- AGENDAMENTOS -->
+<section id="agendamentos" class="page">
+  <div class="card">
+    <h3>Novo Agendamento</h3>
+    <input id="agCliente" placeholder="Cliente">
+    <input id="agData" type="date">
+    <input id="agHora" type="time">
+    <input id="agTipo" placeholder="Tipo">
+    <input id="agResp" placeholder="Responsável">
+    <textarea id="agObs" placeholder="Observações"></textarea>
+    <button class="action" onclick="addAgendamento()">Salvar Agendamento</button>
+  </div>
+  <ul id="listaAgendamentos"></ul>
+</section>
+
+<!-- VENDAS -->
+<section id="vendas" class="page">
+  <div class="card">
+    <h3>Meta Mensal</h3>
+    <input id
