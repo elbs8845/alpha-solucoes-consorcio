@@ -44,6 +44,48 @@
   <h3>Leads Cadastrados</h3>
   <ul id="listaLeads"></ul>
 </section>
+<script>
+let agendamentos = JSON.parse(localStorage.getItem("agendamentos")) || [];
+
+function addAgendamento() {
+  const ag = {
+    cliente: agCliente.value,
+    data: agData.value,
+    hora: agHora.value,
+    tipo: agTipo.value,
+    responsavel: agResp.value,
+    obs: agObs.value
+  };
+
+  agendamentos.push(ag);
+  localStorage.setItem("agendamentos", JSON.stringify(agendamentos));
+
+  agCliente.value = "";
+  agData.value = "";
+  agHora.value = "";
+  agTipo.value = "";
+  agResp.value = "";
+  agObs.value = "";
+
+  renderAgendamentos();
+}
+
+function renderAgendamentos() {
+  listaAgendamentos.innerHTML = "";
+  agendamentos.forEach(a => {
+    listaAgendamentos.innerHTML += `
+      <li>
+        <b>${a.cliente}</b><br>
+        Data: ${a.data} às ${a.hora}<br>
+        Tipo: ${a.tipo}<br>
+        Resp: ${a.responsavel}
+      </li>
+    `;
+  });
+}
+
+renderAgendamentos();
+</script>
 
 
   <section id="agendamentos" class="card page hidden">
