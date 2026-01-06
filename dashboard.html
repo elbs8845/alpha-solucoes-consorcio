@@ -2,50 +2,71 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<title>ALPHA SOLUÇÕES</title>
+<title>ALPHA SOLUÇÕES | Sistema</title>
 <link rel="stylesheet" href="style.css">
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
-<h1>ALPHA SOLUÇÕES</h1>
-<p>Desenvolvido por elbs_</p>
+<header>
+  <h1>ALPHA SOLUÇÕES</h1>
+  <button onclick="logout()">Sair</button>
+</header>
 
 <nav>
+  <button onclick="show('home')">Dashboard</button>
+  <button onclick="show('leads')">Leads</button>
+  <button onclick="show('agendamentos')">Agendamentos</button>
   <button onclick="show('vendas')">Vendas</button>
   <button onclick="show('ranking')">Ranking</button>
   <button onclick="show('relatorio')">Relatório</button>
 </nav>
 
-<div class="section">
-  Meta Mensal:
-  <input type="number" id="meta" value="300000" oninput="atualizar()">
-  <b id="percent">0%</b>
-</div>
+<main>
+  <section id="home" class="card">
+    <h2>Bem-vindo ao sistema</h2>
+    <p>Escolha uma opção no menu</p>
+  </section>
 
-<!-- VENDAS -->
-<div id="vendas" class="section">
-  <h2>Registrar Venda</h2>
-  <input id="vendVendedor" placeholder="Vendedor">
-  <input id="vendValor" type="number" placeholder="Valor">
-  <button onclick="addVenda()">Registrar</button>
-  <ul id="listaVendas"></ul>
-</div>
+  <section id="leads" class="card hidden">
+    <h2>Leads (em breve)</h2>
+  </section>
 
-<!-- RANKING -->
-<div id="ranking" class="section hidden">
-  <h2>Ranking</h2>
-  <ul id="listaRanking"></ul>
-  <canvas id="grafico"></canvas>
-</div>
+  <section id="agendamentos" class="card hidden">
+    <h2>Agendamentos (em breve)</h2>
+  </section>
 
-<!-- RELATÓRIO -->
-<div id="relatorio" class="section hidden">
-  <h2>Relatório Geral</h2>
-  <p>Total Vendido: R$ <span id="total"></span></p>
-  <p>% da Meta: <span id="percent2"></span></p>
-</div>
+  <section id="vendas" class="card hidden">
+    <h2>Vendas (em breve)</h2>
+  </section>
 
-<script src="script.js"></script>
+  <section id="ranking" class="card hidden">
+    <h2>Ranking (em breve)</h2>
+  </section>
+
+  <section id="relatorio" class="card hidden">
+    <h2>Relatório PDF (em breve)</h2>
+  </section>
+</main>
+
+<footer>
+  Desenvolvido por <b>elbs_</b>
+</footer>
+
+<script>
+const user = JSON.parse(localStorage.getItem("logged"));
+if (!user) location.href = "index.html";
+
+function logout() {
+  localStorage.removeItem("logged");
+  location.href = "index.html";
+}
+
+function show(id) {
+  document.querySelectorAll("section").forEach(s => s.classList.add("hidden"));
+  document.getElementById(id).classList.remove("hidden");
+}
+</script>
+
 </body>
 </html>
+
