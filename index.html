@@ -2,31 +2,22 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-  <title>ALPHA SOLUÇÕES - Login</title>
+  <title>ALPHA SOLUÇÕES | Login</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body class="center">
 
-<div class="login-card">
+<div class="card login">
   <h1>ALPHA SOLUÇÕES</h1>
-  <p>Desenvolvido por elbs_</p>
+  <p class="dev">Desenvolvido por elbs_</p>
 
-  <input id="user" placeholder="Usuário">
-  <input id="pass" type="password" placeholder="Senha">
+  <input id="usuario" placeholder="Usuário">
+  <input id="senha" type="password" placeholder="Senha">
   <button onclick="login()">Entrar</button>
 
-  <p id="msg"></p>
+  <span id="msg"></span>
 </div>
 
-<script>
-function login(){
-  if(user.value==="admin" && pass.value==="123"){
-    localStorage.setItem("user","admin");
-    location.href="dashboard.html";
-  } else {
-    msg.innerText="Usuário ou senha inválidos";
-  }
-}
-</script>
+<script src="auth.js"></script>
 </body>
 </html>
