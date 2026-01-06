@@ -2,137 +2,70 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<title>ALPHA SOLUÇÕES - Dashboard</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<style>
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #0b1d39;
-  color: #fff;
-}
-
-header {
-  background: #08162d;
-  padding: 15px;
-  text-align: center;
-  font-size: 22px;
-  font-weight: bold;
-}
-
-nav {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  padding: 10px;
-}
-
-nav button {
-  background: #ff8c00;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 6px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.page {
-  display: none;
-  padding: 20px;
-}
-
-.page.active {
-  display: block;
-}
-
-.card {
-  background: #102b55;
-  padding: 15px;
-  border-radius: 8px;
-  margin-bottom: 15px;
-}
-
-input, select, textarea {
-  width: 100%;
-  padding: 8px;
-  margin: 5px 0;
-  border-radius: 5px;
-  border: none;
-}
-
-button.action {
-  background: #ff8c00;
-  border: none;
-  padding: 10px;
-  width: 100%;
-  margin-top: 10px;
-  border-radius: 6px;
-  font-weight: bold;
-}
-
-ul {
-  list-style: none;
-  padding: 0;
-}
-
-footer {
-  text-align: center;
-  padding: 10px;
-  font-size: 12px;
-  background: #08162d;
-}
-</style>
+<title>ALPHA SOLUÇÕES | Sistema</title>
+<link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-<header>ALPHA SOLUÇÕES</header>
+<header>
+  <h1>ALPHA SOLUÇÕES</h1>
+  <button onclick="logout()">Sair</button>
+</header>
 
 <nav>
-  <button onclick="showPage('leads')">Leads</button>
-  <button onclick="showPage('agendamentos')">Agendamentos</button>
-  <button onclick="showPage('vendas')">Vendas</button>
-  <button onclick="showPage('ranking')">Ranking</button>
+  <button onclick="show('home')">Dashboard</button>
+  <button onclick="show('leads')">Leads</button>
+  <button onclick="show('agendamentos')">Agendamentos</button>
+  <button onclick="show('vendas')">Vendas</button>
+  <button onclick="show('ranking')">Ranking</button>
+  <button onclick="show('relatorio')">Relatório</button>
 </nav>
 
-<!-- LEADS -->
-<section id="leads" class="page active">
-  <div class="card">
-    <h3>Novo Lead</h3>
-    <input id="leadNome" placeholder="Nome">
-    <input id="leadTelefone" placeholder="Telefone">
-    <input id="leadEmail" placeholder="Email">
-    <input id="leadCPF" placeholder="CPF">
-    <input id="leadOrigem" placeholder="Origem">
-    <select id="leadStatus">
-      <option>Novo</option>
-      <option>Em contato</option>
-      <option>Fechado</option>
-    </select>
-    <textarea id="leadObs" placeholder="Observações"></textarea>
-    <button class="action" onclick="addLead()">Salvar Lead</button>
-  </div>
-  <ul id="listaLeads"></ul>
-</section>
+<main>
+  <section id="home" class="card">
+    <h2>Bem-vindo ao sistema</h2>
+    <p>Escolha uma opção no menu</p>
+  </section>
 
-<!-- AGENDAMENTOS -->
-<section id="agendamentos" class="page">
-  <div class="card">
-    <h3>Novo Agendamento</h3>
-    <input id="agCliente" placeholder="Cliente">
-    <input id="agData" type="date">
-    <input id="agHora" type="time">
-    <input id="agTipo" placeholder="Tipo">
-    <input id="agResp" placeholder="Responsável">
-    <textarea id="agObs" placeholder="Observações"></textarea>
-    <button class="action" onclick="addAgendamento()">Salvar Agendamento</button>
-  </div>
-  <ul id="listaAgendamentos"></ul>
-</section>
+  <section id="leads" class="card hidden">
+    <h2>Leads (em breve)</h2>
+  </section>
 
-<!-- VENDAS -->
-<section id="vendas" class="page">
-  <div class="card">
-    <h3>Meta Mensal</h3>
-    <input id
+  <section id="agendamentos" class="card hidden">
+    <h2>Agendamentos (em breve)</h2>
+  </section>
+
+  <section id="vendas" class="card hidden">
+    <h2>Vendas (em breve)</h2>
+  </section>
+
+  <section id="ranking" class="card hidden">
+    <h2>Ranking (em breve)</h2>
+  </section>
+
+  <section id="relatorio" class="card hidden">
+    <h2>Relatório PDF (em breve)</h2>
+  </section>
+</main>
+
+<footer>
+  Desenvolvido por <b>elbs_</b>
+</footer>
+
+<script>
+const user = JSON.parse(localStorage.getItem("logged"));
+if (!user) location.href = "index.html";
+
+function logout() {
+  localStorage.removeItem("logged");
+  location.href = "index.html";
+}
+
+function show(id) {
+  document.querySelectorAll("section").forEach(s => s.classList.add("hidden"));
+  document.getElementById(id).classList.remove("hidden");
+}
+</script>
+
+</body>
+</html>
