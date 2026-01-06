@@ -1,23 +1,87 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>ALPHA SOLUÇÕES | Login</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <title>Alpha Soluções | Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-<body class="center">
+<body>
 
-<div class="card login">
-  <h1>ALPHA SOLUÇÕES</h1>
-  <p class="dev">Desenvolvido por elbs_</p>
+<div class="container">
 
-  <input id="usuario" placeholder="Usuário">
-  <input id="senha" type="password" placeholder="Senha">
-  <button onclick="login()">Entrar</button>
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="logo">
+      <span class="alpha">ALPHA</span>
+      <span class="sub">SOLUÇÕES</span>
+    </div>
 
-  <span id="msg"></span>
+    <nav>
+      <a href="#">Leads</a>
+      <a href="#">Agendamentos</a>
+      <a class="active" href="#">Vendas</a>
+      <a href="#">Ranking</a>
+      <a href="#">Sair</a>
+    </nav>
+  </aside>
+
+  <!-- CONTEÚDO -->
+  <main class="content">
+    <h1>Resumo de Vendas</h1>
+
+    <!-- CARDS -->
+    <div class="cards">
+      <div class="card">
+        <p>Total Vendido</p>
+        <h2>R$ 12.500,00</h2>
+      </div>
+      <div class="card">
+        <p>Meta Mensal</p>
+        <h2>R$ 20.000,00</h2>
+      </div>
+      <div class="card">
+        <p>% da Meta</p>
+        <h2>62.5%</h2>
+      </div>
+    </div>
+
+    <!-- BARRA -->
+    <div class="progress-card">
+      <div class="progress">
+        <div class="progress-bar" style="width:62.5%">62.5%</div>
+      </div>
+    </div>
+
+    <!-- RANKING -->
+    <h2 class="ranking-title">Ranking de Vendedores</h2>
+
+    <div class="ranking">
+      <div class="rank gold">
+        <h3>1º João</h3>
+        <p>R$ 7.200,00</p>
+      </div>
+      <div class="rank silver">
+        <h3>2º Ana</h3>
+        <p>R$ 3.500,00</p>
+      </div>
+      <div class="rank bronze">
+        <h3>3º Pedro</h3>
+        <p>R$ 1.800,00</p>
+      </div>
+    </div>
+
+    <div class="others">
+      <p>4º Carla – R$ 1.000,00</p>
+      <p>5º Marcos – R$ 600,00</p>
+    </div>
+
+    <footer>
+      Desenvolvido por <strong>elbs_</strong>
+    </footer>
+  </main>
+
 </div>
 
-<script src="auth.js"></script>
 </body>
 </html>
