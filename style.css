@@ -80,4 +80,11 @@ footer {
   padding: 15px;
   opacity: .7;
 }
+textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  margin: 8px 0;
+}
 
