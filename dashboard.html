@@ -351,6 +351,141 @@ function renderLeads() {
 renderLeads();
 </script>
 
+  <script>
+/* ================= LOGIN ================= */
+const user = JSON.parse(localStorage.getItem("logged"));
+if (!user) location.href = "index.html";
+
+function logout() {
+  localStorage.removeItem("logged");
+  location.href = "index.html";
+}
+
+function showPage(id) {
+  document.querySelectorAll(".page").forEach(p => p.classList.add("hidden"));
+  document.getElementById(id).classList.remove("hidden");
+}
+
+/* ================= LEADS ================= */
+let leads = JSON.parse(localStorage.getItem("leads")) || [];
+
+function addLead() {
+  leads.push({
+    nome: leadNome.value,
+    telefone: leadTelefone.value,
+    email: leadEmail.value,
+    cpf: leadCPF.value,
+    origem: leadOrigem.value,
+    status: leadStatus.value,
+    obs: leadObs.value
+  });
+  localStorage.setItem("leads", JSON.stringify(leads));
+  renderLeads();
+}
+
+function renderLeads() {
+  listaLeads.innerHTML = "";
+  leads.forEach(l => {
+    listaLeads.innerHTML += `<li><b>${l.nome}</b> - ${l.telefone}</li>`;
+  });
+}
+renderLeads();
+
+/* ================= AGENDAMENTOS ================= */
+let agendamentos = JSON.parse(localStorage.getItem("agendamentos")) || [];
+
+function addAgendamento() {
+  agendamentos.push({
+    cliente: agCliente.value,
+    data: agData.value,
+    hora: agHora.value,
+    tipo: agTipo.value,
+    resp: agResp.value,
+    obs: agObs.value
+  });
+  localStorage.setItem("agendamentos", JSON.stringify(agendamentos));
+  renderAgendamentos();
+}
+
+function renderAgendamentos() {
+  listaAgendamentos.innerHTML = "";
+  agendamentos.forEach(a => {
+    listaAgendamentos.innerHTML += `<li><b>${a.cliente}</b> - ${a.data}</li>`;
+  });
+}
+renderAgendamentos();
+
+/* ================= VENDAS ================= */
+let vendas = JSON.parse(localStorage.getItem("vendas")) || [];
+let meta = Number(localStorage.getItem("meta")) || 0;
+
+function addVenda() {
+  const venda = {
+    cliente: vendCliente.value,
+    produto: vendProduto.value,
+    valor: Number(vendValor.value),
+    vendedor: vendVendedor.value,
+    data: new Date().toLocaleDateString()
+  };
+
+  if (!venda.cliente || !venda.valor || !venda.vendedor) {
+    alert("Preencha Cliente, Valor e Vendedor");
+    return;
+  }
+
+  vendas.push(venda);
+  localStorage.setItem("vendas", JSON.stringify(vendas));
+
+  meta = Number(metaValor.value) || 0;
+  localStorage.setItem("meta", meta);
+
+  vendCliente.value = "";
+  vendProduto.value = "";
+  vendValor.value = "";
+  vendVendedor.value = "";
+
+  renderVendas();
+}
+
+function renderVendas() {
+  const total = vendas.reduce((s, v) => s + v.valor, 0);
+  totalVendido.innerText = total.toFixed(2);
+
+  const percent = meta ? ((total / meta) * 100).toFixed(1) : 0;
+  percentMeta.innerText = percent + "%";
+
+  listaVendas.innerHTML = "";
+  vendas.forEach(v => {
+    listaVendas.innerHTML += `
+      <li>
+        <b>${v.cliente}</b> - R$ ${v.valor.toFixed(2)}<br>
+        Vendedor: ${v.vendedor}
+      </li>`;
+  });
+
+  renderRanking();
+}
+
+metaValor.value = meta;
+renderVendas();
+
+/* ================= RANKING ================= */
+function renderRanking() {
+  const resumo = {};
+  vendas.forEach(v => {
+    resumo[v.vendedor] = (resumo[v.vendedor] || 0) + v.valor;
+  });
+
+  listaRanking.innerHTML = "";
+  Object.entries(resumo)
+    .sort((a, b) => b[1] - a[1])
+    .forEach((r, i) => {
+      listaRanking.innerHTML += `
+        <li>${i + 1}º ${r[0]} - R$ ${r[1].toFixed(2)}</li>`;
+    });
+}
+</script>
+
 </body>
 </html>
 
