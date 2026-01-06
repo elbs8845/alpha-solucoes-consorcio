@@ -47,9 +47,21 @@
 
 
   <section id="agendamentos" class="card page hidden">
-    <h2>Agendamentos</h2>
-    <p>Módulo de agendamentos</p>
-  </section>
+  <h2>Agendamentos</h2>
+
+  <input id="agCliente" placeholder="Nome do Cliente">
+  <input id="agData" type="date">
+  <input id="agHora" type="time">
+  <input id="agTipo" placeholder="Tipo (Ligação / Visita / Vídeo)">
+  <input id="agResp" placeholder="Responsável">
+  <textarea id="agObs" placeholder="Observações"></textarea>
+
+  <button onclick="addAgendamento()">Salvar Agendamento</button>
+
+  <h3>Agendamentos Cadastrados</h3>
+  <ul id="listaAgendamentos"></ul>
+</section>
+
 
   <section id="vendas" class="card page hidden">
     <h2>Vendas</h2>
