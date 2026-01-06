@@ -103,63 +103,86 @@ renderAgendamentos();
 
   <h3>Agendamentos Cadastrados</h3>
   <ul id="listaAgendamentos"></ul>
-</section>
-<script>
+</section
+
+  <script>
 let vendas = JSON.parse(localStorage.getItem("vendas")) || [];
 let meta = Number(localStorage.getItem("meta")) || 0;
 
-metaValor.value = meta;
-
 function addVenda() {
+  const cliente = document.getElementById("vendCliente").value;
+  const produto = document.getElementById("vendProduto").value;
+  const valor = Number(document.getElementById("vendValor").value);
+  const vendedor = document.getElementById("vendVendedor").value;
+
+  if (!cliente || !valor || !vendedor) {
+    alert("Preencha Cliente, Valor e Vendedor");
+    return;
+  }
+
   const venda = {
-    cliente: vendCliente.value,
-    produto: vendProduto.value,
-    valor: Number(vendValor.value),
-    vendedor: vendVendedor.value,
+    cliente,
+    produto,
+    valor,
+    vendedor,
     data: new Date().toLocaleDateString()
   };
 
   vendas.push(venda);
   localStorage.setItem("vendas", JSON.stringify(vendas));
 
-  meta = Number(metaValor.value);
-  localStorage.setItem("meta", meta);
+  const metaInput = document.getElementById("metaValor");
+  if (metaInput) {
+    meta = Number(metaInput.value) || 0;
+    localStorage.setItem("meta", meta);
+  }
 
-  vendCliente.value = "";
-  vendProduto.value = "";
-  vendValor.value = "";
-  vendVendedor.value = "";
+  document.getElementById("vendCliente").value = "";
+  document.getElementById("vendProduto").value = "";
+  document.getElementById("vendValor").value = "";
+  document.getElementById("vendVendedor").value = "";
 
   renderVendas();
 }
 
 function renderVendas() {
   const total = vendas.reduce((s, v) => s + v.valor, 0);
-  totalVendido.innerText = total.toFixed(2);
+  document.getElementById("totalVendido").innerText = total.toFixed(2);
 
-  let percent = meta ? ((total / meta) * 100).toFixed(1) : 0;
-  percentMeta.innerText = percent + "%";
+  const percent = meta ? ((total / meta) * 100).toFixed(1) : 0;
+  document.getElementById("percentMeta").innerText = percent + "%";
 
-  listaVendas.innerHTML = "";
+  const lista = document.getElementById("listaVendas");
+  lista.innerHTML = "";
+
   vendas.forEach(v => {
-    listaVendas.innerHTML += `
+    lista.innerHTML += `
       <li>
         <b>${v.cliente}</b><br>
         Produto: ${v.produto}<br>
         Vendedor: ${v.vendedor}<br>
-        Valor: R$ ${v.valor}<br>
+        Valor: R$ ${v.valor.toFixed(2)}<br>
         Data: ${v.data}
       </li>
     `;
   });
+
+  if (typeof renderRanking === "function") {
+    renderRanking();
+  }
 }
 
-renderVendas() {
-  ...
-  renderRanking();
+function carregarMeta() {
+  const metaInput = document.getElementById("metaValor");
+  if (metaInput) {
+    metaInput.value = meta;
+  }
 }
 
+carregarMeta();
+renderVendas();
 </script>
+
 
 
   <section id="vendas" class="card page hidden">
