@@ -2,70 +2,281 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<title>ALPHA SOLUÇÕES | Sistema</title>
-<link rel="stylesheet" href="style.css">
+<title>ALPHA SOLUÇÕES - Dashboard</title>
+
+<style>
+:root{
+  --azul:#0b1d39;
+  --azul2:#122a52;
+  --laranja:#ff8c00;
+}
+
+*{box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
+
+body{
+  margin:0;
+  background:linear-gradient(135deg,var(--azul),var(--azul2));
+  color:#fff;
+  display:flex;
+}
+
+/* SIDEBAR */
+.sidebar{
+  width:220px;
+  background:#08162e;
+  padding:20px;
+}
+
+.sidebar h2{
+  text-align:center;
+  margin-bottom:30px;
+}
+
+.sidebar button{
+  width:100%;
+  padding:12px;
+  margin-bottom:10px;
+  background:none;
+  border:none;
+  color:#fff;
+  text-align:left;
+  cursor:pointer;
+  border-radius:6px;
+}
+
+.sidebar button:hover,
+.sidebar button.active{
+  background:var(--laranja);
+  color:#000;
+}
+
+/* CONTEÚDO */
+.content{
+  flex:1;
+  padding:30px;
+}
+
+.page{display:none}
+.page.active{display:block}
+
+/* CARDS */
+.card{
+  background:#142e5c;
+  padding:20px;
+  border-radius:12px;
+  margin-bottom:20px;
+  box-shadow:0 10px 25px rgba(0,0,0,.4);
+}
+
+.cards{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:20px;
+}
+
+.big{
+  font-size:28px;
+  font-weight:bold;
+}
+
+/* BOTÕES */
+button.primary{
+  background:var(--laranja);
+  border:none;
+  padding:12px 18px;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+/* INPUTS */
+input{
+  width:100%;
+  padding:10px;
+  margin:6px 0;
+  border-radius:6px;
+  border:none;
+}
+
+/* LISTAS */
+ul{list-style:none;padding:0}
+li{
+  background:#0e244a;
+  padding:10px;
+  border-radius:6px;
+  margin-bottom:6px;
+}
+
+/* BARRA META */
+.progress{
+  background:#0a1a33;
+  border-radius:10px;
+  overflow:hidden;
+}
+.progress span{
+  display:block;
+  height:20px;
+  background:linear-gradient(90deg,#ff9a00,#ff6a00);
+}
+
+/* RODAPÉ */
+footer{
+  text-align:center;
+  opacity:.6;
+  margin-top:30px;
+}
+</style>
 </head>
+
 <body>
 
-<header>
-  <h1>ALPHA SOLUÇÕES</h1>
+<div class="sidebar">
+  <h2>ALPHA<br>SOLUÇÕES</h2>
+  <button onclick="openPage('vendas')" class="active">Vendas</button>
+  <button onclick="openPage('ranking')">Ranking</button>
+  <button onclick="openPage('leads')">Leads</button>
+  <button onclick="openPage('agendamentos')">Agendamentos</button>
   <button onclick="logout()">Sair</button>
-</header>
+</div>
 
-<nav>
-  <button onclick="show('home')">Dashboard</button>
-  <button onclick="show('leads')">Leads</button>
-  <button onclick="show('agendamentos')">Agendamentos</button>
-  <button onclick="show('vendas')">Vendas</button>
-  <button onclick="show('ranking')">Ranking</button>
-  <button onclick="show('relatorio')">Relatório</button>
-</nav>
+<div class="content">
 
-<main>
-  <section id="home" class="card">
-    <h2>Bem-vindo ao sistema</h2>
-    <p>Escolha uma opção no menu</p>
-  </section>
+<!-- VENDAS -->
+<div id="vendas" class="page active">
+  <h1>Resumo de Vendas</h1>
 
-  <section id="leads" class="card hidden">
-    <h2>Leads (em breve)</h2>
-  </section>
+  <div class="cards">
+    <div class="card">
+      <p>Total Vendido</p>
+      <div class="big">R$ <span id="totalVendido">0</span></div>
+    </div>
 
-  <section id="agendamentos" class="card hidden">
-    <h2>Agendamentos (em breve)</h2>
-  </section>
+    <div class="card">
+      <p>Meta Mensal</p>
+      <input id="metaValor" placeholder="Digite a meta">
+    </div>
 
-  <section id="vendas" class="card hidden">
-    <h2>Vendas (em breve)</h2>
-  </section>
+    <div class="card">
+      <p>% da Meta</p>
+      <div class="big"><span id="percentMeta">0%</span></div>
+    </div>
+  </div>
 
-  <section id="ranking" class="card hidden">
-    <h2>Ranking (em breve)</h2>
-  </section>
+  <div class="card">
+    <div class="progress"><span id="barraMeta" style="width:0%"></span></div>
+  </div>
 
-  <section id="relatorio" class="card hidden">
-    <h2>Relatório PDF (em breve)</h2>
-  </section>
-</main>
+  <div class="card">
+    <h3>Registrar Venda</h3>
+    <input id="vendCliente" placeholder="Cliente">
+    <input id="vendProduto" placeholder="Produto">
+    <input id="vendValor" placeholder="Valor">
+    <input id="vendVendedor" placeholder="Vendedor">
+    <button class="primary" onclick="addVenda()">Registrar</button>
+    <ul id="listaVendas"></ul>
+  </div>
+</div>
+
+<!-- RANKING -->
+<div id="ranking" class="page">
+  <h1>Ranking de Vendedores</h1>
+  <ul id="listaRanking"></ul>
+</div>
+
+<!-- LEADS -->
+<div id="leads" class="page">
+  <h1>Leads</h1>
+  <input id="leadNome" placeholder="Nome">
+  <input id="leadTelefone" placeholder="Telefone">
+  <button class="primary" onclick="addLead()">Salvar Lead</button>
+  <ul id="listaLeads"></ul>
+</div>
+
+<!-- AGENDAMENTOS -->
+<div id="agendamentos" class="page">
+  <h1>Agendamentos</h1>
+  <input id="agCliente" placeholder="Cliente">
+  <input id="agData" type="date">
+  <button class="primary" onclick="addAgendamento()">Salvar</button>
+  <ul id="listaAgendamentos"></ul>
+</div>
 
 <footer>
   Desenvolvido por <b>elbs_</b>
 </footer>
 
-<script>
-const user = JSON.parse(localStorage.getItem("logged"));
-if (!user) location.href = "index.html";
+</div>
 
-function logout() {
-  localStorage.removeItem("logged");
-  location.href = "index.html";
+<script>
+/* LOGIN */
+if(!localStorage.getItem("logged")) location.href="index.html";
+function logout(){localStorage.removeItem("logged");location.href="index.html";}
+function openPage(p){
+  document.querySelectorAll(".page").forEach(e=>e.classList.remove("active"));
+  document.querySelectorAll(".sidebar button").forEach(b=>b.classList.remove("active"));
+  document.getElementById(p).classList.add("active");
+  event.target.classList.add("active");
 }
 
-function show(id) {
-  document.querySelectorAll("section").forEach(s => s.classList.add("hidden"));
-  document.getElementById(id).classList.remove("hidden");
+/* VENDAS */
+let vendas = JSON.parse(localStorage.getItem("vendas"))||[];
+let meta = localStorage.getItem("meta")||0;
+metaValor.value=meta;
+
+function addVenda(){
+  vendas.push({
+    cliente:vendCliente.value,
+    produto:vendProduto.value,
+    valor:Number(vendValor.value),
+    vendedor:vendVendedor.value
+  });
+  localStorage.setItem("vendas",JSON.stringify(vendas));
+  localStorage.setItem("meta",metaValor.value);
+  renderVendas();
+}
+
+function renderVendas(){
+  let total=0;
+  listaVendas.innerHTML="";
+  vendas.forEach(v=>{
+    total+=v.valor;
+    listaVendas.innerHTML+=`<li>${v.cliente} - R$ ${v.valor}</li>`;
+  });
+  totalVendido.innerText=total.toFixed(2);
+  let p=metaValor.value?((total/metaValor.value)*100):0;
+  percentMeta.innerText=p.toFixed(1)+"%";
+  barraMeta.style.width=p+"%";
+  renderRanking();
+}
+renderVendas();
+
+/* RANKING */
+function renderRanking(){
+  let r={};
+  vendas.forEach(v=>r[v.vendedor]=(r[v.vendedor]||0)+v.valor);
+  listaRanking.innerHTML="";
+  Object.entries(r).sort((a,b)=>b[1]-a[1]).forEach((v,i)=>{
+    listaRanking.innerHTML+=`<li>${i+1}º ${v[0]} - R$ ${v[1]}</li>`;
+  });
+}
+
+/* LEADS */
+let leads=JSON.parse(localStorage.getItem("leads"))||[];
+function addLead(){
+  leads.push({nome:leadNome.value,telefone:leadTelefone.value});
+  localStorage.setItem("leads",JSON.stringify(leads));
+  listaLeads.innerHTML+=`<li>${leadNome.value}</li>`;
+}
+
+/* AGENDAMENTOS */
+let ag=JSON.parse(localStorage.getItem("ag"))||[];
+function addAgendamento(){
+  ag.push({cliente:agCliente.value,data:agData.value});
+  localStorage.setItem("ag",JSON.stringify(ag));
+  listaAgendamentos.innerHTML+=`<li>${agCliente.value} - ${agData.value}</li>`;
 }
 </script>
 
 </body>
 </html>
+
